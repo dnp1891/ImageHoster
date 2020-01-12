@@ -48,7 +48,7 @@ public class UserController {
         // Otherwise redirect on registration page
         if (checkValidPassword(password)) {
             userService.registerUser(user);
-            return "redirect:/users/login";
+            return "users/login";
         }
         else {
             String error = "Password must contain at least 1 alphabet, 1 number & 1 special character";
