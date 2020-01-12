@@ -14,7 +14,7 @@ public class CommentRepository {
     @PersistenceUnit(unitName = "imageHoster")
     private EntityManagerFactory emf;
 
-    public void addComment(Comment newComment) {
+    public Comment addComment(Comment newComment) {
         EntityManager em = emf.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
@@ -25,5 +25,6 @@ public class CommentRepository {
         } catch (Exception e) {
             transaction.rollback();
         }
+        return newComment;
     }
 }

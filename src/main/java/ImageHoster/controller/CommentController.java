@@ -25,11 +25,11 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    // This method is called when request pattern is '/images/{imageId}/{imageTitle}/comments' and request is of type POST
+    // This method is called when request pattern is '/image/{imageId}/{imageTitle}/comments' and request is of type POST
     // Method called when used want to add comment on specific image
     // Receives path param from imageId and imageTitle
     // Set image, user adn comment in Comment model and sace comment in image
-    @RequestMapping(value = "/images/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
+    @RequestMapping(value = "/image/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
     public String addImageComment(@PathVariable("imageId") Integer imageId, @PathVariable("imageTitle") String title, @RequestParam("comment") String comment, HttpSession session, Model model) {
         Image image = imageService.getImage(imageId);
         User user = (User) session.getAttribute("loggeduser");
@@ -41,7 +41,7 @@ public class CommentController {
         newComment.setCreatedDate(new Date());
 
         commentService.addComment(newComment);
-
+        System.out.println("/images/" + image.getId() + "/" + image.getTitle());
         return "redirect:/images/" + image.getId() + "/" + image.getTitle();
     }
 }
