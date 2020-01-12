@@ -99,16 +99,17 @@ public class ImageController {
         User user = (User) session.getAttribute("loggeduser");
         Image image = imageService.getImage(imageId);
 
-        String tags = convertTagsToString(image.getTags());
         model.addAttribute("image", image);
-        model.addAttribute("tags", tags);
         model.addAttribute("comments", image.getComments());
         if (image.getUser().getId() == user.getId()) {
+            String tags = convertTagsToString(image.getTags());
+            model.addAttribute("tags", tags);
             return "images/edit";
         }
         else {
             String error = "Only the owner of the image can edit the image";
             model.addAttribute("editError", error);
+            model.addAttribute("tags", image.getTags());
             return "images/image";
         }
     }
@@ -161,9 +162,8 @@ public class ImageController {
             return "redirect:/images";
         }
         else {
-            String tags = convertTagsToString(image.getTags());
             model.addAttribute("image", image);
-            model.addAttribute("tags", tags);
+            model.addAttribute("tags", image.getTags());
             model.addAttribute("comments", image.getComments());
 
             String error = "Only the owner of the image can delete the image";
