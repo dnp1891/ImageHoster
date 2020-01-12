@@ -29,9 +29,6 @@ public class ImageController {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private CommentService commentService;
-
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
     public String getUserImages(Model model) {
@@ -174,27 +171,6 @@ public class ImageController {
             return "images/image";
         }
     }
-
-    // This method is called when request pattern is '/images/{imageId}/{imageTitle}/comments' and request is of type POST
-    // Method called when used want to add comment on specific image
-    // Receives path param from imageId and imageTitle
-    // Set image, user adn comment in Comment model and sace comment in image
-    @RequestMapping(value = "/images/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
-    public String addImageComment(@PathVariable("imageId") Integer imageId, @PathVariable("imageTitle") String title, @RequestParam("comment") String comment, HttpSession session, Model model) {
-        Image image = imageService.getImage(imageId);
-        User user = (User) session.getAttribute("loggeduser");
-
-        Comment newComment = new Comment();
-        newComment.setImage(image);
-        newComment.setUser(user);
-        newComment.setText(comment);
-        newComment.setCreatedDate(new Date());
-
-        commentService.addComment(newComment);
-
-        return "redirect:/images/" + image.getId() + "/" + image.getTitle();
-    }
-
 
     //This method converts the image to Base64 format
     private String convertUploadedFileToBase64(MultipartFile file) throws IOException {
