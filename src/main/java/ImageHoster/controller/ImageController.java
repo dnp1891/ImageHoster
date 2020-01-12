@@ -171,6 +171,10 @@ public class ImageController {
         }
     }
 
+    // This method is called when request pattern is '/images/{imageId}/{imageTitle}/comments' and request is of type POST
+    // Method called when used want to add comment on specific image
+    // Receives path param from imageId and imageTitle
+    // Set image, user adn comment in Comment model and sace comment in image
     @RequestMapping(value = "/images/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
     public String addImageComment(@PathVariable("imageId") Integer imageId, @PathVariable("imageTitle") String title, @RequestParam("comment") String comment, HttpSession session, Model model) {
         Image image = imageService.getImage(imageId);
