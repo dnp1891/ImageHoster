@@ -41,7 +41,6 @@ public class CommentController {
         newComment.setCreatedDate(new Date());
 
         commentService.addComment(newComment);
-        System.out.println("/images/" + image.getId() + "/" + image.getTitle());
         return "redirect:/images/" + image.getId() + "/" + image.getTitle();
     }
 }
