@@ -1,5 +1,6 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
@@ -50,6 +51,7 @@ public class ImageController {
         Image image = imageService.getImage(imageId);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        model.addAttribute("comments", image.getComments());
         return "images/image";
     }
 
@@ -99,6 +101,7 @@ public class ImageController {
         String tags = convertTagsToString(image.getTags());
         model.addAttribute("image", image);
         model.addAttribute("tags", tags);
+        model.addAttribute("comments", image.getComments());
         if (image.getUser().getId() == user.getId()) {
             return "images/edit";
         }
@@ -160,11 +163,27 @@ public class ImageController {
             String tags = convertTagsToString(image.getTags());
             model.addAttribute("image", image);
             model.addAttribute("tags", tags);
+            model.addAttribute("comments", image.getComments());
 
             String error = "Only the owner of the image can delete the image";
             model.addAttribute("deleteError", error);
             return "images/image";
         }
+    }
+
+    @RequestMapping(value = "/images/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
+    public String addImageComment(@PathVariable("imageId") Integer imageId, @PathVariable("imageTitle") String title, @RequestParam("comment") String comment, HttpSession session, Model model) {
+        Image image = imageService.getImage(imageId);
+        User user = (User) session.getAttribute("loggeduser");
+
+        Comment newComment = new Comment();
+        newComment.setImage(image);
+        newComment.setUser(user);
+        newComment.setText(comment);
+
+        imageService.addImageComment(newComment);
+
+        return "redirect:/images/" + image.getId() + "/" + image.getTitle();
     }
 
 
