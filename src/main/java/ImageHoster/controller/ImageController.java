@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -184,6 +185,7 @@ public class ImageController {
         newComment.setImage(image);
         newComment.setUser(user);
         newComment.setText(comment);
+        newComment.setCreatedDate(LocalDate.now());
 
         imageService.addImageComment(newComment);
 
