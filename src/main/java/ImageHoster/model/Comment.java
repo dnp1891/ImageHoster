@@ -1,7 +1,7 @@
 package ImageHoster.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 //@Entity annotation; class is JPA entity
 @Entity
@@ -21,7 +21,7 @@ public class Comment {
 
     //date when comment is added
     @Column(name = "created_date")
-    private LocalDate createdDate;
+    private Date createdDate;
 
     //each comment connected with user; and used can have multiple comments on specific image
     //comment is mapped with user with Many:One mapping
@@ -54,11 +54,11 @@ public class Comment {
         this.text = text;
     }
 
-    public LocalDate getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 

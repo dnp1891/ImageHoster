@@ -51,7 +51,12 @@ public class Image {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
 
+    //List of all comment of an image
+    //Each image can have multiple comments
+    //image is mapped with comment by One:Many mapping
     @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    //Order by comment id in descending order; comments added last comment will be shown first
+    @OrderBy("id desc")
     private List<Comment> comments = new ArrayList<>();
 
     public Image() {

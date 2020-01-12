@@ -185,7 +185,7 @@ public class ImageController {
         newComment.setImage(image);
         newComment.setUser(user);
         newComment.setText(comment);
-        newComment.setCreatedDate(LocalDate.now());
+        newComment.setCreatedDate(new Date());
 
         imageService.addImageComment(newComment);
 
