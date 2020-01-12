@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -40,9 +41,21 @@ public class UserController {
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
-        userService.registerUser(user);
-        return "redirect:/users/login";
+    public String registerUser(User user, Model model) {
+        String password = user.getPassword();
+        // Check if password is valid
+        // If password is valid register user
+        // Otherwise redirect on registration page
+        if (checkValidPassword(password)) {
+            userService.registerUser(user);
+            return "redirect:/users/login";
+        }
+        else {
+            String error = "Password must contain at least 1 alphabet, 1 number & 1 special character";
+            model.addAttribute("passwordTypeError", error);
+            model.addAttribute("User", user);
+            return "users/registration";
+        }
     }
 
     //This controller method is called when the request pattern is of type 'users/login'
@@ -78,5 +91,23 @@ public class UserController {
         List<Image> images = imageService.getAllImages();
         model.addAttribute("images", images);
         return "index";
+    }
+
+    /**
+     * Check if password is valid or not
+     *
+     * Password entered by the user must contain at least 1 alphabet (a-z or A-Z),
+     * 1 number (0-9) and 1 special character (any character other than a-z, A-Z and 0-9)
+     *
+     * @param password
+     * @return
+     */
+    private boolean checkValidPassword(String password) {
+        boolean isValid = false;
+        // check with regex if password is strong and matches required characters
+        if (Pattern.matches("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*\\W).*$", password)) {
+            isValid = true;
+        }
+        return isValid;
     }
 }
